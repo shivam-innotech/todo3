@@ -1,75 +1,99 @@
 import React, { useState } from 'react'
 
 const ComponentsOne = () => {
-    const [inputData, setInputData] = useState('');
-    const [items, setItems] = useState([]);
+    const [input, setInput] = useState('');
+    const [itask, setItask] = useState([]);
+    const [isEdit, setIsEdit] = useState(null);
     const [toggleSubmit, setToggleSubmit] = useState(true);
-    const [isEditItem, setIsEditItem] = useState(null);
 
-    const addItem = () => {
-        if (!inputData) {
-            alert('fill it');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!input) {
+            let ele = document.getElementById("valid");
+            ele.classList.add("is-invalid");
         }
-        else if (inputData && !toggleSubmit) {
-            setItems(
-                items.map((elem) => {
-                    if (elem.id === isEditItem) {
-                        return { ...elem, name: inputData }
+        else if (input && !toggleSubmit) {
+            setItask(
+                itask.map((elem) => {
+                    if (elem.id === isEdit) {
+                        return { ...elem, name: input }
                     }
                     return elem;
                 })
             )
+            setInput('');
+            setIsEdit(null);
             setToggleSubmit(true);
-
-            setInputData('');
-
-            setIsEditItem(null);
         }
         else {
-            const allInputData = { id: new Date().getTime().toString(), name: inputData }
-            setItems([...items, allInputData]);
-            setInputData('');
+            const newData = { id: new Date().getTime().toString(), name: input, isChecked: false }
+            setItask([...itask, newData]);
+            setInput('');
+            let ele = document.getElementById("valid");
+            ele.classList.add("is-invalid");
         }
     }
 
+    const checkboxChange = (id) => {
+        const change = itask.map((elem) => {
+            if (elem.id === id) return { ...elem, isChecked: !elem.isChecked };
+            return elem;
+        });
+        setItask(change);
+    };
+
     const editItem = (id) => {
-        let newEditItem = items.find((elem) => {
+        let newEditItem = itask.find((elem) => {
             return elem.id === id
         });
-        console.log(newEditItem);
-
+        setInput(newEditItem.name);
+        setIsEdit(id);
         setToggleSubmit(false);
-
-        setInputData(newEditItem.name);
-
-        setIsEditItem(id);
     }
 
     return (
         <>
-            <div className="main-div">
-                <div className="addItems">
-                    <input type="text" placeholder='add item'
-                        value={inputData}
-                        onChange={(e) => setInputData(e.target.value)}
-                    />
+            <div className="container">
+                <h1>Todo App</h1>
+                <div className="showItask">
                     {
-                        toggleSubmit ? <button type="submit" onClick={addItem}>Submit</button> :
-                            <button onClick={addItem}>Edit</button>
-                    }
-
-                </div>
-
-                <div className="showItems">
-                    {
-                        items.map((elem) => {
+                        itask.map((elem) => {
                             return (
                                 <div className="eachItem" key={elem.id}>
-                                    <h1>{elem.name}</h1>
-                                    <button onClick={() => editItem(elem.id)}>Edit</button>
+                                    <div className="flx">
+                                        <input type="checkbox" checked={elem.isChecked} onChange={() => {
+                                            checkboxChange(elem.id);
+                                        }} />
+                                        <h5>{elem.name}</h5>
+
+                                        <div className="span">
+                                            <span className='badge bg-secondary ms-2'>
+                                                {elem.isChecked === true ? "Complete" : null}
+                                            </span>
+                                            <span
+                                                className="badge bg-secondary ms-2" onClick={() => {
+                                                    editItem(elem.id);
+                                                }}>
+                                                Edit
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             )
                         })
+                    }
+                </div>
+
+                <div className="addItask">
+                    <h4>Todo</h4>
+                    <input type="text" placeholder='Your Todo....' className='form-control my-3'
+                        id="valid"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                    {
+                        toggleSubmit ? <button className="btn btn-light" type="submit" onClick={handleSubmit}>Submit</button> :
+                            <button className="btn btn-light" onClick={handleSubmit}>Edit</button>
                     }
                 </div>
             </div>
