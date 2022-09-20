@@ -1,11 +1,11 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ComponentOne from './components/ComponentOne'
+import TodoApp from './components/TodoApp'
 
 function App() {
   return (
     <>
-      <ComponentOne />
+      <TodoApp />
     </>
   );
 }

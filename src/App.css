@@ -17,3 +17,11 @@ h5{
   position: absolute;
   right: 10px;
 }
+.invalid{
+  border
+  :1px solid #ff0000
+}
+label{
+  color: #ff0000;
+  padding-bottom: 15px;
+}

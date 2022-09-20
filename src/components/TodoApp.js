@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 
-const ComponentsOne = () => {
+const TodoApp = () => {
     const [input, setInput] = useState('');
     const [itask, setItask] = useState([]);
     const [isEdit, setIsEdit] = useState(null);
     const [toggleSubmit, setToggleSubmit] = useState(true);
+    const [error, setError] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (input.length === 0) {
+            setError(true)
+        }
         if (!input) {
-            let ele = document.getElementById("valid");
-            ele.classList.add("is-invalid");
         }
         else if (input && !toggleSubmit) {
             setItask(
@@ -29,8 +31,7 @@ const ComponentsOne = () => {
             const newData = { id: new Date().getTime().toString(), name: input, isChecked: false }
             setItask([...itask, newData]);
             setInput('');
-            let ele = document.getElementById("valid");
-            ele.classList.add("is-invalid");
+            console.log(input);
         }
     }
 
@@ -65,7 +66,6 @@ const ComponentsOne = () => {
                                             checkboxChange(elem.id);
                                         }} />
                                         <h5>{elem.name}</h5>
-
                                         <div className="span">
                                             <span className='badge bg-secondary ms-2'>
                                                 {elem.isChecked === true ? "Complete" : null}
@@ -86,11 +86,12 @@ const ComponentsOne = () => {
 
                 <div className="addItask">
                     <h4>Todo</h4>
-                    <input type="text" placeholder='Your Todo....' className='form-control my-3'
-                        id="valid"
-                        value={input}
+                    <input type="text" placeholder='Your Todo....' className='form-control' id="valid" value={input}
                         onChange={(e) => setInput(e.target.value)}
                     />
+                    {error && input.length <= 0 ?
+                        <label className='mxy-3'>Empty</label> : ""}
+                    <br />
                     {
                         toggleSubmit ? <button className="btn btn-light" type="submit" onClick={handleSubmit}>Submit</button> :
                             <button className="btn btn-light" onClick={handleSubmit}>Edit</button>
@@ -101,5 +102,5 @@ const ComponentsOne = () => {
     )
 }
 
-export default ComponentsOne
+export default TodoApp
 
