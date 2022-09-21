@@ -25,3 +25,15 @@ label{
   color: #ff0000;
   padding-bottom: 15px;
 }
+.bg{
+  cursor: pointer;
+}
+
+.bg-salmon {
+  width: 100%;
+  border-style: solid;
+  border-color: red;
+  border-width: 1px;
+  height: 40px;
+  border-radius: 5px;
+}
