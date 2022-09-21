@@ -11,11 +11,14 @@ const App = () => {
   const [isEdit, setIsEdit] = useState(null);
   const [toggleSubmit, setToggleSubmit] = useState(true);
   const [error, setError] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.length === 0) {
       setError(true)
+      setIsActive(current => !current);
+
     }
     if (!input) {
     }
@@ -56,15 +59,25 @@ const App = () => {
     setIsEdit(id);
     setToggleSubmit(false);
   }
+
+  const deleteItem = (index) => {
+    const updateditems = itask.filter((elem) => {
+      return index !== elem.id;
+    });
+    setItask(updateditems);
+  }
+
   return (
     <>
       <div className="container">
-        <EditTodo
+        <TodoList
           itask={itask}
           checkboxChange={checkboxChange}
           editItem={editItem}
+          deleteItem={deleteItem}
         />
-        <TodoList
+        <EditTodo
+          isActive={isActive}
           handleSubmit={handleSubmit}
           input={input}
           setInput={setInput}

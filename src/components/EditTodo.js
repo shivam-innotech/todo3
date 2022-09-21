@@ -1,33 +1,22 @@
 import React from 'react'
+
 const EditTodo = (props) => {
     return (
         <>
-            <h1>Todo App</h1>
-            <div className="showItask">
+            <div className="addItask">
+                <h4>Todo</h4>
+                <input type="text" placeholder='Your Todo....'
+                    className={props.isActive ? 'bg-salmon' : 'form-control'} id="valid" value={props.input}
+                    onChange={(e) => { props.setInput(e.target.value) }}
+                />
+                {props.error && props.input.length <= 0 ?
+                    <label className='mxy-3'>Empty</label> : ""}
+                <br />
                 {
-                    props.itask.map((elem) => {
-                        return (
-                            <div className="eachItem" key={elem.id}>
-                                <div className="flx">
-                                    <input type="checkbox" checked={elem.isChecked} onChange={() => {
-                                        props.checkboxChange(elem.id);
-                                    }} />
-                                    <h5>{elem.name}</h5>
-                                    <div className="span">
-                                        <span className='badge bg-secondary ms-2'>
-                                            {elem.isChecked === true ? "Complete" : null}
-                                        </span>
-                                        <span
-                                            className="badge bg-secondary ms-2" onClick={() => {
-                                                props.editItem(elem.id);
-                                            }}>
-                                            Edit
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })
+                    props.toggleSubmit ? <button className="btn btn-light"
+                        type="submit" onClick={props.handleSubmit}>Submit</button> :
+                        <button className="btn btn-light"
+                            onClick={props.handleSubmit}>Edit</button>
                 }
             </div>
         </>
